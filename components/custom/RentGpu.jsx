@@ -9,7 +9,14 @@ const RentGpu = () => {
         <h1 className="text-lg font-bold capitalize">live GPU nodes</h1>
         <VscChip size={25} className="mt-1 animate-pulse text-green-600" />
       </div>
-      <CardGpu />
+      <div className="mt-5 grid grid-cols-3 gap-4">
+        <CardGpu />
+        <CardGpu />
+        <CardGpu />
+        <CardGpu />
+        <CardGpu />
+        <CardGpu />
+      </div>
     </section>
   );
 };
