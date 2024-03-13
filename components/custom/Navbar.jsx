@@ -29,7 +29,9 @@ const Navbar = () => {
         </ul>
         <div className="flex  gap-4">
           <ModeToggle />
-          <Button className="rounded-lg">Login</Button>
+          <Link href={"/login"}>
+            <Button className="rounded-lg">Login</Button>
+          </Link>
         </div>
       </nav>
       <div className="h-[1px] w-full bg-gradient-to-r from-transparent from-10% via-slate-300 via-50% to-transparent to-90% dark:via-slate-700"></div>
