@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import PopupRent from "./PopupRent";
 
 const CardGpu = (props) => {
   const [progress, setProgress] = useState(0);
@@ -34,7 +35,7 @@ const CardGpu = (props) => {
           </p>
         </div>
       </div>
-      <div className="my-5 flex flex-wrap justify-left gap-2">
+      <div className="justify-left my-5 flex flex-wrap gap-2">
         <Badge
           variant="secondary"
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
@@ -66,7 +67,10 @@ const CardGpu = (props) => {
           <Tooltip>
             <TooltipTrigger className="flex  w-full flex-col items-start justify-start px-3">
               <p className="mb-2 text-xs font-bold uppercase">used</p>
-              <Progress value={props.overallUsedPercentage} className="h-2 w-[100%] " />
+              <Progress
+                value={props.overallUsedPercentage}
+                className="h-2 w-[100%] "
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p>{props.overallUsedPercentage}%</p>
@@ -76,7 +80,8 @@ const CardGpu = (props) => {
       </div>
       <div className="flex items-center justify-end gap-4">
         <p className="font-semibold">${props.price} / Hour</p>
-        <Button className="dark:text-white">Rent now</Button>
+
+        <PopupRent price={props.price} name={props.gpuName} />
       </div>
     </Card>
   );
