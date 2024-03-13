@@ -13,7 +13,7 @@ const Navbar = () => {
     <div>
       <nav className="flex h-16 w-full items-center justify-between px-10 py-10  ">
         <Link href={"/"}>
-          <Image src={"/logo.webp"} alt="logo" width={55} height={55} />
+          <Image src={"/logo.webp"} priority alt="logo" width={55} height={55} />
         </Link>
         <ul className="flex gap-5">
           {NAVBAR.map((link) => (
