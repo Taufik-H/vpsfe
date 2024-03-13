@@ -37,37 +37,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TbCloudDownload, TbCloudUpload } from "react-icons/tb";
+import { datatable } from "@/constant";
 
-const data = [
-  {
-    id: "m5gr84i9",
-    title: "  1x NVIDIA A100-SXM4-80GB",
-    rate: 8.5,
-    status: "success",
-    gpu: "0GB/24GB",
-    cpu: "2/16",
-    speed: "12/80",
-  },
-  {
-    id: "sdfsdfdsf",
-    title: "  1x NVIDIA A100-SXM4-80GB",
-    rate: 8.5,
-    status: "success",
-    gpu: "0GB/24GB",
-    cpu: "2/16",
-    speed: "12/80",
-  },
-  {
-    id: "sdfsdfsfd",
-    title: "  1x NVIDIA A100-SXM4-80GB",
-    rate: 8.5,
-    status: "success",
-    gpu: "0GB/24GB",
-    cpu: "2/16",
-    speed: "12/80",
-  },
-];
-
+const data = datatable;
 export const columns = [
   {
     id: "select",
@@ -182,39 +154,33 @@ export const columns = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize text-green-500">{row.getValue("status")}</div>
+      <div className="font-semibold capitalize">{row.getValue("status")}</div>
     ),
   },
 
-  //   {
-  //     id: "actions",
-  //     enableHiding: false,
-  //     cell: ({ row }) => {
-  //       const payment = row.original;
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const dataaction = row.original;
 
-  //       return (
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger asChild>
-  //             <Button variant="ghost" className="h-8 w-8 p-0">
-  //               <span className="sr-only">Open menu</span>
-  //               <MoreHorizontal className="h-4 w-4" />
-  //             </Button>
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent align="end">
-  //             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //             <DropdownMenuItem
-  //               onClick={() => navigator.clipboard.writeText(payment.id)}
-  //             >
-  //               Copy payment ID
-  //             </DropdownMenuItem>
-  //             <DropdownMenuSeparator />
-  //             <DropdownMenuItem>View customer</DropdownMenuItem>
-  //             <DropdownMenuItem>View payment details</DropdownMenuItem>
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-  //       );
-  //     },
-  //   },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Stop service</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
 
 export default function DataTableDemo() {
