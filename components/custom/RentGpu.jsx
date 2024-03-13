@@ -11,7 +11,7 @@ const RentGpu = () => {
         <h1 className="text-lg font-bold capitalize">live GPU nodes</h1>
         <VscChip size={25} className="mt-1 animate-pulse text-green-600" />
       </div>
-      <Tabs defaultValue="All" className='mb-4'>
+      <Tabs defaultValue="All" className="mb-4">
         <TabsList className="my-4">
           <TabsTrigger value="All">All</TabsTrigger>
           <TabsTrigger value="80GB">80GB</TabsTrigger>
@@ -22,7 +22,10 @@ const RentGpu = () => {
           <TabsTrigger value="12GB">12GB</TabsTrigger>
           <TabsTrigger value="8GB">8GB</TabsTrigger>
         </TabsList>
-        <TabsContent value="All" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="All"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes.map((gpuNode) => (
             <CardGpu
               key={"All" + gpuNode.cpuName + gpuNode.gpuName}
@@ -30,7 +33,10 @@ const RentGpu = () => {
             />
           ))}
         </TabsContent>
-        <TabsContent value="80GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="80GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 80)
             .map((gpuNode) => (
@@ -40,7 +46,10 @@ const RentGpu = () => {
               />
             ))}
         </TabsContent>
-        <TabsContent value="24GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="24GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 24)
             .map((gpuNode) => (
@@ -50,7 +59,10 @@ const RentGpu = () => {
               />
             ))}
         </TabsContent>
-        <TabsContent value="16GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="16GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 16)
             .map((gpuNode) => (
@@ -60,7 +72,10 @@ const RentGpu = () => {
               />
             ))}
         </TabsContent>
-        <TabsContent value="15GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="15GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 15)
             .map((gpuNode) => (
@@ -70,7 +85,10 @@ const RentGpu = () => {
               />
             ))}
         </TabsContent>
-        <TabsContent value="12GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="12GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 12)
             .map((gpuNode) => (
@@ -80,7 +98,10 @@ const RentGpu = () => {
               />
             ))}
         </TabsContent>
-        <TabsContent value="8GB" className="grid grid-cols-3 gap-4 mt-0">
+        <TabsContent
+          value="8GB"
+          className="mt-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        >
           {gpuNodes
             .filter((gpuNode) => gpuNode.gpuUsage.total == 8)
             .map((gpuNode) => (

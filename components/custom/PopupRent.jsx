@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +12,21 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 const PopupRent = (props) => {
+  const router = useRouter();
+  const [isLoading, setisLoading] = useState(false);
+  const handleClick = () => {
+    // use logic to handle submit form
+
+    setisLoading(true);
+    setTimeout(() => {
+      // After some delay, navigate to the waiting page
+      router.push("/user/waiting");
+    }, 2000);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -73,7 +88,16 @@ const PopupRent = (props) => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Pay now</Button>
+          {isLoading ? (
+            <Button disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button onClick={handleClick} type="submit">
+              Pay now
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
