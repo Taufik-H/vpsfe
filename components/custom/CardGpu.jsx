@@ -14,7 +14,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 
-const CardGpu = ({ ...props }) => {
+const CardGpu = (props) => {
   const [progress, setProgress] = useState(0);
 
   React.useEffect(() => {
@@ -28,34 +28,37 @@ const CardGpu = ({ ...props }) => {
           <CiMicrochip size={20} />
         </div>
         <div className="">
-          <p className="text-xs font-medium text-slate-500">
-            EPYC 7643 48-Core Processor AMD
-          </p>
+          <p className="text-xs font-medium text-slate-500">{props.cpuName}</p>
           <p className="text-sm font-bold text-slate-700 dark:text-white">
-            1x NVIDIA A100-SXM4-80GB
+            {props.gpuName}
           </p>
         </div>
       </div>
-      <div className="my-5 flex justify-center gap-2">
+      <div className="my-5 flex flex-wrap justify-left gap-2">
         <Badge
           variant="secondary"
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
         >
           <p className=" uppercase">gpu</p>
-          <p>0GB / 24GB</p>
+          <p>
+            {props.gpuUsage.used}GB / {props.gpuUsage.total}GB
+          </p>
         </Badge>
         <Badge
           variant="secondary"
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
         >
           <p className=" uppercase">cpu</p>
-          <p>2GB / 16GB</p>
+          <p>
+            {props.cpuUsage.used}GB / {props.cpuUsage.total}GB
+          </p>
         </Badge>
         <Badge
           variant="secondary"
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
         >
-          <TbCloudUpload /> 2GB / <TbCloudDownload /> 16GB
+          <TbCloudUpload /> {props.uploadSpeed}Mbps / <TbCloudDownload />{" "}
+          {props.downloadSpeed}Mbps
         </Badge>
       </div>
       <div className="my-4">
@@ -63,16 +66,16 @@ const CardGpu = ({ ...props }) => {
           <Tooltip>
             <TooltipTrigger className="flex  w-full flex-col items-start justify-start px-3">
               <p className="mb-2 text-xs font-bold uppercase">used</p>
-              <Progress value={progress} className="h-2 w-[100%] " />
+              <Progress value={props.overallUsedPercentage} className="h-2 w-[100%] " />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{progress}%</p>
+              <p>{props.overallUsedPercentage}%</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
       <div className="flex items-center justify-end gap-4">
-        <p className="font-semibold">$2.38 / Hour</p>
+        <p className="font-semibold">${props.price} / Hour</p>
         <Button className="dark:text-white">Rent now</Button>
       </div>
     </Card>
