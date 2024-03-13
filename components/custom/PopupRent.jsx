@@ -24,7 +24,7 @@ const PopupRent = (props) => {
     setisLoading(true);
     setTimeout(() => {
       // After some delay, navigate to the waiting page
-      router.push("/user/waiting");
+      router.push("/waiting");
     }, 2000);
   };
   return (
