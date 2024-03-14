@@ -2,10 +2,6 @@
 
 import * as React from "react";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -37,9 +33,12 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TbCloudDownload, TbCloudUpload } from "react-icons/tb";
-import { datatable } from "@/constant";
+import { adminOrders } from "@/constant";
+import Image from "next/image";
+import PopupWallet from "@/components/custom/PopupWallet";
 
-const data = datatable;
+const data = adminOrders;
+// use useEffect to fetch data from server dont use constant like this, this is only dummy data
 export const columns = [
   {
     id: "select",
@@ -65,96 +64,94 @@ export const columns = [
   },
 
   {
-    accessorKey: "title",
+    accessorKey: "username",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>,
-  },
-  {
-    accessorKey: "rate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Rate
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("rate")}</div>,
-  },
-  {
-    accessorKey: "gpu",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          GPU
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("gpu")}</div>,
-  },
-  {
-    accessorKey: "cpu",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          CPU
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("cpu")}</div>,
-  },
-  {
-    accessorKey: "speed",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          SPEED
+          Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="lowercase">
-        {" "}
-        <Badge
-          variant="secondary"
-          className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
-        >
-          <TbCloudUpload />
-          {row.getValue("speed")} <TbCloudDownload />
-        </Badge>
+        <div className="lowercase">{row.getValue("username")}</div>{" "}
       </div>
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
-      <div className="font-semibold capitalize">{row.getValue("status")}</div>
+      <div className="lowercase">
+        <div className="lowercase">{row.getValue("email")}</div>{" "}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "image",
+    header: ({ column }) => {
+      return <Button variant="ghost">Avatar</Button>;
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">
+        <div className="lowercase">
+          <Image
+            src={row.getValue("image")}
+            alt="avatar"
+            height={50}
+            width={50}
+            className="rounded-full object-cover object-center"
+          />
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "wallet",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Wallet
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("wallet")}</div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("status")}</div>
     ),
   },
 
@@ -165,19 +162,10 @@ export const columns = [
       const dataaction = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Action</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Stop service</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <PopupWallet
+          username={row.getValue("username")}
+          passwordhost={"password"}
+        />
       );
     },
   },
@@ -212,10 +200,10 @@ export default function OrderTable() {
     <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter title..."
-          value={table.getColumn("title")?.getFilterValue() ?? ""}
+          placeholder="Filter by name..."
+          value={table.getColumn("username")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("username")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

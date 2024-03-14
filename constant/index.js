@@ -107,3 +107,13 @@ export const datatable = [
     speed: "12/80",
   },
 ];
+
+export const adminOrders = [
+  {
+    username: "John Doe",
+    email: "jhondoe@gmail.com",
+    image: "/logo.webp",
+    wallet: "0x1234567890",
+    status: "pending",
+  },
+];
