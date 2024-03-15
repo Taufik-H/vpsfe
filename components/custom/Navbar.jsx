@@ -1,4 +1,3 @@
-"use client";
 import { NAVBAR } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,11 +14,12 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
+import { useAuth } from "../auth/hooks/useAuth";
 
 const Navbar = () => {
   const currentPath = usePathname();
+  const { isLoggedIn, logout } = useAuth(); // Menggunakan hook useAuth
 
-  // disable when the current path is login or register
   if (currentPath === "/login" || currentPath === "/register") {
     return null;
   }
@@ -76,9 +76,16 @@ const Navbar = () => {
                     </Link>
                   </div>
                 ))}
-                <Link href={"/login"}>
-                  <Button className="mt-5 rounded-lg">Login</Button>
-                </Link>
+                {/* sementara Tampilkan tombol Logout jika pengguna sudah login */}
+                {isLoggedIn ? (
+                  <Button className="mt-5 rounded-lg" onClick={logout}>
+                    Logout
+                  </Button>
+                ) : (
+                  <Link href={"/login"}>
+                    <Button className="mt-5 rounded-lg">Login</Button>
+                  </Link>
+                )}
               </SheetContent>
             </Sheet>
           </div>
