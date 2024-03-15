@@ -83,8 +83,6 @@ const PopupRent = (props) => {
                 Min Deposit $30
               </Label>
               <Input
-                type="number"
-                min="30"
                 id="mindeposit"
                 value={data.mindeposit}
                 onChange={(e) =>
