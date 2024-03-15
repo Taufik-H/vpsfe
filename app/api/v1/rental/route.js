@@ -22,21 +22,29 @@ export async function POST(request) {
   //  detail user Login
   const cookieStorage = cookies();
   const token = cookieStorage.get("token")?.value;
-  const user = verify(token, process.env.JWT_SECRET);
 
   try {
+    if (!token) {
+      return NextResponse.json(
+        { message: "user not found" },
+        {
+          status: 401,
+        },
+      );
+    }
+    const user = verify(token, process.env.JWT_SECRET);
+
     const data = await request.json();
     console.log("user data", data.payload);
-    console.log("user data", data.id);
+    console.log("user data", user);
 
     const result = await pool.query("INSERT INTO rentals SET ?", {
-      nodeId: data.payload.id,
-      deposit: data.payload.deposit,
+      nodeId: data.payload.nodeId,
+      deposit: Number(data.payload.mindeposit),
       userId: user.id,
       status: "pending",
       point: 10,
       address: user.address,
-      privateKey: user.pk,
     });
 
     return NextResponse.json({

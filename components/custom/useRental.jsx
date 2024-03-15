@@ -56,7 +56,7 @@ const useRental = () => {
         if (response.status === 200) {
           setOpenModal(false);
           toast.success(response.data.message, toastStyle);
-          router.refresh();
+          router.push("/waiting");
         }
       })
       .catch((error) => {

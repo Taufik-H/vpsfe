@@ -17,28 +17,26 @@ import { useRouter } from "next/navigation";
 import useRental from "./useRental";
 
 const PopupRent = (props) => {
-  const { dataWallet, handleWallet } = useRental();
+  const { dataWallet, handleWallet, handleRental } = useRental();
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState({
-    name: "",
-    price: "",
+    nodeId: props.id,
     mindeposit: "",
-    walletadders: "",
   });
 
-  const handleFormSubmit = () => {
-    setisLoading(true);
+  // const handleFormSubmit = () => {
+  //   setisLoading(true);
 
-    handleRental(data)
-      .then(() => {
-        router.push("/waiting");
-      })
-      .catch((error) => {
-        console.error("Error while handling rental:", error);
-        setisLoading(false);
-      });
-  };
+  //   handleRental(data)
+  //     .then(() => {
+  //       router.push("/waiting");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error while handling rental:", error);
+  //       setisLoading(false);
+  //     });
+  // };
 
   return (
     <Dialog>
@@ -82,9 +80,11 @@ const PopupRent = (props) => {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="mindeposit" className=" text-left">
-                Min Deposit
+                Min Deposit $30
               </Label>
               <Input
+                type="number"
+                min="30"
                 id="mindeposit"
                 value={data.mindeposit}
                 onChange={(e) =>
@@ -116,7 +116,7 @@ const PopupRent = (props) => {
               Please wait
             </Button>
           ) : (
-            <Button onClick={handleFormSubmit} type="button">
+            <Button onClick={() => handleRental(data)} type="button">
               Pay now
             </Button>
           )}
