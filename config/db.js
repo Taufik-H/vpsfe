@@ -3,9 +3,9 @@ import mysql from "serverless-mysql";
 export const pool = mysql({
   config: {
     host: "49.12.12.193",
-    user: "flex",
+    user: "cloud",
     password: "jumat123",
     port: 3306,
-    database: "flex",
+    database: "cloud",
   },
 });
