@@ -26,6 +26,7 @@ export const useLogin = () => {
         setLoading(false);
         if (response.status === 200) {
           toast.success(response.data.message, toastStyle);
+
           window.location.href = "/";
         }
       })

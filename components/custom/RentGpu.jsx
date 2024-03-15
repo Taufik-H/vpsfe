@@ -36,9 +36,9 @@ const RentGpu = () => {
           value="All"
           className="mt-0 grid gap-7 md:grid-cols-2 lg:grid-cols-3"
         >
-          {gpuNodes.map((gpuNode) => (
+          {gpuNodes.map((gpuNode, index) => (
             <CardGpu
-              key={"All" + gpuNode.cpuName + gpuNode.gpuName}
+              key={"All" + gpuNode.cpuName + gpuNode.gpuName + index}
               {...gpuNode}
             />
           ))}

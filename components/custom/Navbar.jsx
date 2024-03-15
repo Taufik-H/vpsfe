@@ -3,7 +3,7 @@ import { NAVBAR } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -15,15 +15,22 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
+import Cookies from "js-cookie";
+import { useLogin } from "../auth/hooks/useLogin";
 
 const Navbar = () => {
   const currentPath = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // disable when the current path is login or register
   if (currentPath === "/login" || currentPath === "/register") {
     return null;
   }
-
+  useEffect(() => {
+    const sessionCookie = Cookies.get("__session");
+    if (sessionCookie) {
+      setIsLoggedIn(true);
+    }
+  }, []);
   return (
     <div className="sticky top-0 p-2 px-10">
       <nav className=" bg-blur-md mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 py-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
@@ -76,15 +83,25 @@ const Navbar = () => {
                     </Link>
                   </div>
                 ))}
-                <Link href={"/login"}>
-                  <Button className="mt-5 rounded-lg">Login</Button>
-                </Link>
+                {/* Tampilkan tombol Logout jika pengguna sudah login */}
+                {isLoggedIn ? (
+                  <Button className="mt-5 rounded-lg">Logout</Button>
+                ) : (
+                  <Link href={"/login"}>
+                    <Button className="mt-5 rounded-lg">Login</Button>
+                  </Link>
+                )}
               </SheetContent>
             </Sheet>
           </div>
-          <Link href={"/login"} className="hidden lg:block">
-            <Button className="rounded-lg">Login</Button>
-          </Link>
+          {/* Sembunyikan tombol Login jika pengguna sudah login */}
+          {!isLoggedIn ? (
+            <Link href={"/login"} className="hidden lg:block">
+              <Button className="rounded-lg">Login</Button>
+            </Link>
+          ) : (
+            <Button className="hidden rounded-lg lg:block">Logout</Button>
+          )}
         </div>
       </nav>
     </div>
