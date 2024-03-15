@@ -141,13 +141,12 @@ export const columns = [
     cell: ({ row }) => {
       const statusValue = row.getValue("status");
 
-      const displayText = statusValue === 1 ? "Runing" : "Pending";
       const textClassName =
-        statusValue === 1 ? "text-green-600" : "text-yellow-600";
+        statusValue === "runing" ? "text-green-600" : "text-yellow-600";
 
       return (
         <div className={`font-semibold capitalize ${textClassName}`}>
-          {displayText}
+          {statusValue}
         </div>
       );
     },
@@ -156,15 +155,16 @@ export const columns = [
   {
     header: "Action",
 
-    id: "actionsuuu",
+    id: "action",
     enableHiding: false,
     cell: ({ row }) => {
       const dataaction = row.original;
-
       return (
         <PopupWallet
-          username={row.getValue("username")}
+          // username={row.getValue("username")}
           passwordhost={"password"}
+          idNode={dataaction.id}
+          status={dataaction.status}
         />
       );
     },
@@ -210,9 +210,9 @@ export default function OrderTable() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by name..."
-          value={table.getColumn("username")?.getFilterValue() ?? ""}
+          value={table.getColumn("title")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("username")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

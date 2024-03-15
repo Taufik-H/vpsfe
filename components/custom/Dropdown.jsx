@@ -40,7 +40,15 @@ export function Dropdown(props) {
                 <p className="text-[12px] font-semibold">{props.name}</p>
                 <p className="text-[9px] text-slate-800">{props.email}</p>
               </div>
-              <Badge className="text-[9px] text-slate-800">{props.role}</Badge>
+              {props.role !== "admin" ? (
+                <Badge className="text-[9px] text-slate-800">
+                  ${props.balance}
+                </Badge>
+              ) : (
+                <Badge className="text-[9px] text-slate-800">
+                  {props.role}
+                </Badge>
+              )}
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

@@ -129,6 +129,7 @@ const Navbar = () => {
               name={userData.name}
               email={userData.email}
               role={userData.roleId}
+              balance={userData.balance}
             />
           </div>
         )}

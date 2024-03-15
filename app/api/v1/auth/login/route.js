@@ -38,6 +38,7 @@ export async function POST(req) {
       email: userData.email,
       roleId: userData.role,
       address: userData.address,
+      balance: userData.balance,
       isLogedin: true,
     };
 

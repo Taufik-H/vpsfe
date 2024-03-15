@@ -8,6 +8,7 @@ export const userLoginState = atom({
     email: "",
     roleId: "",
     address: "",
+    balance: 0,
     isLogedin: false,
   },
 });
