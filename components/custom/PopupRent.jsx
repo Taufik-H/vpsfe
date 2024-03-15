@@ -12,26 +12,34 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useRental from "./useRental";
+
 const PopupRent = (props) => {
   const { dataWallet, handleWallet } = useRental();
-
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
-  const handleClick = () => {
-    // use logic to handle submit form
+  const [data, setData] = useState({
+    name: "",
+    price: "",
+    mindeposit: "",
+    walletadders: "",
+  });
 
+  const handleFormSubmit = () => {
     setisLoading(true);
-    setTimeout(() => {
-      // After some delay, navigate to the waiting page
-      router.push("/waiting");
-    }, 2000);
+
+    handleRental(data)
+      .then(() => {
+        router.push("/waiting");
+      })
+      .catch((error) => {
+        console.error("Error while handling rental:", error);
+        setisLoading(false);
+      });
   };
 
-  console.log("data props", props);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -54,7 +62,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="name"
-                defaultValue={dataWallet?.title}
+                defaultValue={props.name}
                 className="col-span-3"
                 disabled
               />
@@ -67,7 +75,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="price"
-                defaultValue={dataWallet?.rate}
+                defaultValue={props.price}
                 className=""
                 disabled
               />
@@ -76,7 +84,14 @@ const PopupRent = (props) => {
               <Label htmlFor="mindeposit" className=" text-left">
                 Min Deposit
               </Label>
-              <Input id="mindeposit" className="" />
+              <Input
+                id="mindeposit"
+                value={data.mindeposit}
+                onChange={(e) =>
+                  setData({ ...data, mindeposit: e.target.value })
+                }
+                className=""
+              />
             </div>
           </div>
 
@@ -87,7 +102,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="walletaddress"
-                defaultValue={dataWallet?.address}
+                defaultValue={dataWallet ? dataWallet.address : ""}
                 className="col-span-3"
                 disabled
               />
@@ -101,7 +116,7 @@ const PopupRent = (props) => {
               Please wait
             </Button>
           ) : (
-            <Button onClick={handleClick} type="submit">
+            <Button onClick={handleFormSubmit} type="button">
               Pay now
             </Button>
           )}
