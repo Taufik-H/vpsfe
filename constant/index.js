@@ -1,9 +1,9 @@
 export const NAVBAR = [
-  { id: 1, label: "rent gpu", href: "/" },
-  { id: 2, label: "private node", href: "/private-node" },
-  { id: 3, label: "anonymous hosting", href: "/anonymous-hosting" },
+  { id: 1, label: "Rent GPU Computing", href: "/" },
+  { id: 2, label: "Cloud Mining", href: "/cloud-mining" },
+  { id: 3, label: "Cloud Gaming", href: "/cloud-gaming" },
   { id: 4, label: "cloud desktop", href: "/cloud-desktop" },
-  { id: 5, label: "GPU mining", href: "/gpu-mining" },
+  { id: 5, label: "Anon Node", href: "/anon-node" },
 ];
 
 export const datatable = [
