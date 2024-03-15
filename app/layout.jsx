@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         />
         <link rel="icon" href="/cloud.ico" />
       </head>
-      <body className={cn(inter.className)}>
+      <body className={cn(inter.className, "bg-slate-50 dark:bg-slate-950")}>
         <Toaster />
         <ThemeProvider
           attribute="class"
