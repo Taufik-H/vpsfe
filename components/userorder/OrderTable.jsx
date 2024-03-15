@@ -92,10 +92,9 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("rate")}</div>,
+    cell: ({ row }) => <div className="lowercase">${row.getValue("rate")}</div>,
   },
   {
-    accessorKey: "gpu",
     header: ({ column }) => {
       return (
         <Button
@@ -107,10 +106,12 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("gpu")}</div>,
+
+    accessorFn: (row) => `${row.gpuStart}GB / ${row.gpu}GB`,
+    id: "gpu",
+    cell: ({ getValue }) => <div className="">{getValue()}</div>,
   },
   {
-    accessorKey: "cpu",
     header: ({ column }) => {
       return (
         <Button
@@ -122,10 +123,11 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("cpu")}</div>,
+    accessorFn: (row) => `${row.cpuStart}GB / ${row.cpu}GB`,
+    id: "cpu",
+    cell: ({ getValue }) => <div className=""> {getValue()}</div>,
   },
   {
-    accessorKey: "speed",
     header: ({ column }) => {
       return (
         <Button
@@ -137,7 +139,9 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => (
+    accessorFn: (row) => `${row.up} / ${row.down}`,
+    id: "speed",
+    cell: ({ getValue }) => (
       <div className="lowercase">
         {" "}
         <Badge
@@ -145,7 +149,7 @@ export const columns = [
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
         >
           <TbCloudUpload />
-          {row.getValue("speed")} <TbCloudDownload />
+          {getValue()} <TbCloudDownload />
         </Badge>
       </div>
     ),
@@ -153,9 +157,19 @@ export const columns = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => (
-      <div className="font-semibold capitalize">{row.getValue("status")}</div>
-    ),
+    cell: ({ row }) => {
+      const statusValue = row.getValue("status");
+
+      const displayText = statusValue === 1 ? "Runing" : "Pending";
+      const textClassName =
+        statusValue === 1 ? "text-green-600" : "text-yellow-600";
+
+      return (
+        <div className={`font-semibold capitalize ${textClassName}`}>
+          {displayText}
+        </div>
+      );
+    },
   },
 
   {
@@ -183,6 +197,8 @@ export const columns = [
   },
 ];
 
+// const data = datatable;
+
 // main funct
 export default function OrderTable() {
   const [data, setData] = React.useState([]);
@@ -190,10 +206,12 @@ export default function OrderTable() {
     fetch(`${API_URL}/order`)
       .then((res) => res.json())
       .then((datas) => {
-        // console.log({ datas });
-        setData(datas.data);
+        console.log("datas.data", datas);
+        setData(datas);
       });
   }, []);
+
+  console.log(data);
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
