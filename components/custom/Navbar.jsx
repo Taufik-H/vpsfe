@@ -21,21 +21,24 @@ import { SECRET_KEY } from "@/utils/ApiUrl";
 import { jwtExtract } from "@/utils/jwtExtract";
 import { useRecoilState } from "recoil";
 import { userLoginState } from "@/recoil/userLogin";
+import { Dropdown } from "./Dropdown";
+import { SquareGanttChart } from "lucide-react";
 
 const Navbar = () => {
   const [userData, setUserData] = useRecoilState(userLoginState);
   const currentPath = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  console.log(userData.name);
   if (currentPath === "/login" || currentPath === "/register") {
     return null;
   }
   useEffect(() => {
     const sessionCookie = Cookies.get("token");
-    console.log({ sessionCookie });
-    if (sessionCookie) {
-      const payload = jwtExtract(sessionCookie, SECRET_KEY);
+    const userLoggedin = Cookies.get("__session");
 
+    if (sessionCookie && userLoggedin) {
+      const payload = jwtExtract(sessionCookie, SECRET_KEY);
+      setIsLoggedIn(true);
       setUserData(payload);
     }
   }, []);
@@ -67,7 +70,12 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>
+                  <div className="">
+                    <p>{userData.name}</p>
+                    <p>{userData.email}</p>
+                  </div>
+                </SheetTitle>
               </SheetHeader>
               <DropdownMenuSeparator className="mt-3" />
 
@@ -86,7 +94,17 @@ const Navbar = () => {
               ))}
               {/* Tampilkan tombol Logout jika pengguna sudah login */}
               {isLoggedIn ? (
-                <Button className="mt-5 rounded-lg">Logout</Button>
+                <div className="mt-5">
+                  {userData.roleId === "admin" ? (
+                    <Link href={"/admin/order"} className="flex items-center">
+                      All user orders
+                    </Link>
+                  ) : (
+                    <Link href={"/user/order"} className="flex items-center">
+                      Orders
+                    </Link>
+                  )}
+                </div>
               ) : (
                 <Link href={"/login"}>
                   <Button className="mt-5 rounded-lg">Login</Button>
@@ -101,7 +119,13 @@ const Navbar = () => {
             <Button className="rounded-lg">Login</Button>
           </Link>
         ) : (
-          <Button className="hidden rounded-lg lg:block">Logout</Button>
+          <div className="hidden lg:block">
+            <Dropdown
+              name={userData.name}
+              email={userData.email}
+              role={userData.roleId}
+            />
+          </div>
         )}
       </div>
     </nav>
