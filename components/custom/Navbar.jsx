@@ -25,8 +25,8 @@ const Navbar = () => {
   }
 
   return (
-    <div className="p-2 px-10">
-      <nav className=" bg-blur-md  mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
+    <div className="sticky top-0 p-2 px-10">
+      <nav className=" bg-blur-md mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 py-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
         <Link href={"/"}>
           <Image
             src={"/nav.png"}

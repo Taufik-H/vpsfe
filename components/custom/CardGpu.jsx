@@ -29,9 +29,9 @@ const CardGpu = (props) => {
           <CiMicrochip size={20} />
         </div>
         <div className="">
-          <p className="text-xs font-medium text-slate-500">{props.cpuName}</p>
+          <p className="text-xs font-medium text-slate-500">{props.title}</p>
           <p className="text-sm font-bold text-slate-700 dark:text-white">
-            {props.gpuName}
+            {props.subTitle}
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ const CardGpu = (props) => {
         >
           <p className=" uppercase">gpu</p>
           <p>
-            {props.gpuUsage.used}GB / {props.gpuUsage.total}GB
+            {props.gpuStart}GB / {props.gpu}GB
           </p>
         </Badge>
         <Badge
@@ -51,15 +51,15 @@ const CardGpu = (props) => {
         >
           <p className=" uppercase">cpu</p>
           <p>
-            {props.cpuUsage.used}GB / {props.cpuUsage.total}GB
+            {props.cpuStart}GB / {props.cpu}GB
           </p>
         </Badge>
         <Badge
           variant="secondary"
           className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
         >
-          <TbCloudUpload /> {props.uploadSpeed}Mbps / <TbCloudDownload />{" "}
-          {props.downloadSpeed}Mbps
+          <TbCloudUpload /> {props.up}Mbps / <TbCloudDownload /> {props.down}
+          Mbps
         </Badge>
       </div>
       <div className="my-4">
@@ -67,19 +67,16 @@ const CardGpu = (props) => {
           <Tooltip>
             <TooltipTrigger className="flex  w-full flex-col items-start justify-start px-3">
               <p className="mb-2 text-xs font-bold uppercase">used</p>
-              <Progress
-                value={props.overallUsedPercentage}
-                className="h-2 w-[100%] "
-              />
+              <Progress value={props.used} className="h-2 w-[100%] " />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{props.overallUsedPercentage}%</p>
+              <p>{props.used}%</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
       <div className="flex items-center justify-end gap-4">
-        <p className="font-semibold">${props.price} / Hour</p>
+        <p className="font-semibold">${props.rate} / Hour</p>
 
         <PopupRent price={props.price} name={props.gpuName} />
       </div>
