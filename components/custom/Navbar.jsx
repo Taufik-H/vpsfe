@@ -19,9 +19,15 @@ import { DropdownMenuSeparator } from "../ui/dropdown-menu";
 
 const Navbar = () => {
   const currentPath = usePathname();
+
+  // disable when the current path is login or register
+  if (currentPath === "/login" || currentPath === "/register") {
+    return null;
+  }
+
   return (
     <div>
-      <nav className=" flex h-16 w-full items-center justify-between px-10 py-10  ">
+      <nav className=" flex h-16 w-full items-center justify-between px-10 py-10   ">
         <Link href={"/"}>
           <Image
             src={"/nav.png"}
