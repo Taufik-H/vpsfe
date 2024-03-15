@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toastStyle } from "@/utils/toastStyle";
-import toast from "react-hot-toast";
-import { ethers } from "ethers";
-import Cookies from "js-cookie";
-import { ApiService } from "@/services/ApiService";
-import { useRecoilValue } from "recoil";
 import { userLoginState } from "@/recoil/userLogin";
+import { ApiService } from "@/services/ApiService";
+import { toastStyle } from "@/utils/toastStyle";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRecoilValue } from "recoil";
 
 const useRental = () => {
   const userLoginData = useRecoilValue(userLoginState);
@@ -33,14 +31,11 @@ const useRental = () => {
   }
 
   const handleWallet = (id, title, rate) => {
-    if (!token) {
+    if (!userLoginData.isLogedin) {
       return toast.error("please login first", toastStyle);
     } else {
-      const wallet = ethers.Wallet.createRandom();
       setWallet({
-        address: wallet.address,
-        mnemonic: wallet.mnemonic.phrase,
-        privateKey: wallet.privateKey,
+        address: userLoginData?.address,
         rate: rate,
         id: id,
         title: title,

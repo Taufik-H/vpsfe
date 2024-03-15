@@ -17,7 +17,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useRental from "./useRental";
 const PopupRent = (props) => {
-  const { handleWallet } = useRental();
+  const { dataWallet, handleWallet } = useRental();
 
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
@@ -30,10 +30,14 @@ const PopupRent = (props) => {
       router.push("/waiting");
     }, 2000);
   };
+
+  console.log("data props", props);
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onClick={handleWallet}>Rent Now</Button>
+        <Button onClick={() => handleWallet(props.id, props.title, props.rate)}>
+          Rent Now
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -50,7 +54,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="name"
-                defaultValue={props.name}
+                defaultValue={dataWallet?.title}
                 className="col-span-3"
                 disabled
               />
@@ -63,7 +67,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="price"
-                defaultValue={props.price}
+                defaultValue={dataWallet?.rate}
                 className=""
                 disabled
               />
@@ -83,7 +87,7 @@ const PopupRent = (props) => {
               </Label>
               <Input
                 id="walletaddress"
-                defaultValue="change the value to address from api"
+                defaultValue={dataWallet?.address}
                 className="col-span-3"
                 disabled
               />

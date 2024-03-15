@@ -78,7 +78,7 @@ const CardGpu = (props) => {
       <div className="flex items-center justify-end gap-4">
         <p className="font-semibold">${props.rate} / Hour</p>
 
-        <PopupRent price={props.price} name={props.gpuName} />
+        <PopupRent price={props.rate} name={props.title} id={props.id} />
       </div>
     </Card>
   );
