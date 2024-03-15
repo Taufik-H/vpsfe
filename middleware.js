@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import * as jose from "jose";
+import { UserContextProvider } from "@/components/custom/UserContext";
 
 export default async function middleware(req) {
   const jwtSecret = process.env.JWT_SECRET;
@@ -11,8 +12,13 @@ export default async function middleware(req) {
   }
 
   try {
-    await jose.jwtVerify(token, encodedJwtSecret);
-    return NextResponse.next();
+    const { payload } = await jose.jwtVerify(token, encodedJwtSecret);
+    const user = payload; // Assuming the payload contains user data
+    return NextResponse.next({
+      props: {
+        user,
+      },
+    });
   } catch (error) {
     console.log({ error });
     return NextResponse.redirect(new URL("/login", req.url));

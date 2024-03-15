@@ -3,7 +3,7 @@ import { NAVBAR } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -16,12 +16,13 @@ import {
 } from "../ui/sheet";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
 import Cookies from "js-cookie";
-import { useLogin } from "../auth/hooks/useLogin";
+import { UserContext } from "./UserContext";
 
 const Navbar = () => {
   const currentPath = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const { user } = useContext(UserContext);
+  console.log(user);
   if (currentPath === "/login" || currentPath === "/register") {
     return null;
   }
