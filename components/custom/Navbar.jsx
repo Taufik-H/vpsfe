@@ -24,11 +24,11 @@ const Navbar = () => {
       <nav className=" flex h-16 w-full items-center justify-between px-10 py-10  ">
         <Link href={"/"}>
           <Image
-            src={"/logo.webp"}
+            src={"/nav.png"}
             priority
             alt="logo"
-            width={55}
-            height={55}
+            width={200}
+            height={200}
           />
         </Link>
         <ul className="hidden gap-5 lg:flex ">
