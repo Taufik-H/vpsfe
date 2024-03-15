@@ -36,8 +36,9 @@ import { TbCloudDownload, TbCloudUpload } from "react-icons/tb";
 import { adminOrders } from "@/constant";
 import Image from "next/image";
 import PopupWallet from "@/components/custom/PopupWallet";
+import { API_URL } from "@/utils/ApiUrl";
 
-const data = adminOrders;
+// const data = adminOrders;
 // use useEffect to fetch data from server dont use constant like this, this is only dummy data
 export const columns = [
   {
@@ -64,7 +65,7 @@ export const columns = [
   },
 
   {
-    accessorKey: "username",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -78,7 +79,7 @@ export const columns = [
     },
     cell: ({ row }) => (
       <div className="lowercase">
-        <div className="lowercase">{row.getValue("username")}</div>{" "}
+        <div className="lowercase">{row.getValue("name")}</div>{" "}
       </div>
     ),
   },
@@ -101,62 +102,61 @@ export const columns = [
       </div>
     ),
   },
+
   {
-    accessorKey: "image",
-    header: ({ column }) => {
-      return <Button variant="ghost">Avatar</Button>;
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">
-        <div className="lowercase">
-          <Image
-            src={row.getValue("image")}
-            alt="avatar"
-            height={50}
-            width={50}
-            className="rounded-full object-cover object-center"
-          />
-        </div>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "wallet",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Wallet
+          Title
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>,
+  },
+  {
+    accessorKey: "address",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Address
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("wallet")}</div>
+      <div className="lowercase">{row.getValue("address")}</div>
     ),
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
+    header: "Status",
+    cell: ({ row }) => {
+      const statusValue = row.getValue("status");
+
+      const displayText = statusValue === 1 ? "Runing" : "Pending";
+      const textClassName =
+        statusValue === 1 ? "text-green-600" : "text-yellow-600";
+
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className={`font-semibold capitalize ${textClassName}`}>
+          {displayText}
+        </div>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("status")}</div>
-    ),
   },
 
   {
-    id: "actions",
+    header: "Action",
+
+    id: "actionsuuu",
     enableHiding: false,
     cell: ({ row }) => {
       const dataaction = row.original;
@@ -172,6 +172,15 @@ export const columns = [
 ];
 
 export default function OrderTable() {
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    fetch(`${API_URL}/rental`)
+      .then((res) => res.json())
+      .then((datas) => {
+        setData(datas?.data);
+      });
+  }, []);
+
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});

@@ -206,12 +206,9 @@ export default function OrderTable() {
     fetch(`${API_URL}/order`)
       .then((res) => res.json())
       .then((datas) => {
-        console.log("datas.data", datas);
         setData(datas);
       });
   }, []);
-
-  console.log(data);
 
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
