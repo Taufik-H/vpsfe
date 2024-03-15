@@ -11,8 +11,6 @@ import { useRecoilValue } from "recoil";
 const useRental = () => {
   const userLoginData = useRecoilValue(userLoginState);
 
-  console.log("userLoginData", userLoginData);
-
   const [isLoading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [dataWallet, setWallet] = useState({
@@ -23,6 +21,7 @@ const useRental = () => {
     id: "",
     title: "",
   });
+  console.log("dataWallet", dataWallet);
 
   const router = useRouter();
 
@@ -35,7 +34,7 @@ const useRental = () => {
       return toast.error("please login first", toastStyle);
     } else {
       setWallet({
-        address: userLoginData?.address,
+        address: userLoginData.address,
         rate: rate,
         id: id,
         title: title,
