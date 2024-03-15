@@ -37,6 +37,8 @@ export async function POST(req) {
       name: userData.name,
       email: userData.email,
       roleId: userData.role,
+      address: userData.address,
+      isLogedin: true,
     };
 
     // Buat token

@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/custom/Navbar";
 import { ThemeProvider } from "@/components/darkmode/theme-provider";
 import { Toaster } from "react-hot-toast";
+import { Provider } from "@/components/Provider/Provider";
+import NavParent from "@/components/custom/NavParent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,15 +27,19 @@ export default function RootLayout({ children }) {
       </head>
       <body className={cn(inter.className, "bg-slate-50 dark:bg-slate-950")}>
         <Toaster />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-        </ThemeProvider>
+        <Provider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* <Navbar /> */}
+
+            <NavParent />
+            {children}
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

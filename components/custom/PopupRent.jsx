@@ -15,7 +15,10 @@ import { Label } from "@/components/ui/label";
 
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import useRental from "./useRental";
 const PopupRent = (props) => {
+  const { handleWallet } = useRental();
+
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const handleClick = () => {
@@ -30,7 +33,7 @@ const PopupRent = (props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Rent Now</Button>
+        <Button onClick={handleWallet}>Rent Now</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

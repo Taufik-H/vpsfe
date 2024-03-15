@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { ApiService } from "../../../../../../services/ApiService";
 import { useRouter } from "next/navigation";
 import { toastStyle } from "@/utils/toastStyle";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
+import { ApiService } from "@/services/ApiService";
+import { useRecoilValue } from "recoil";
+import { userLoginState } from "@/recoil/userLogin";
 
 const useRental = () => {
-  const token = Cookies.get("token");
+  const userLoginData = useRecoilValue(userLoginState);
+
+  console.log("userLoginData", userLoginData);
 
   const [isLoading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -29,17 +33,21 @@ const useRental = () => {
   }
 
   const handleWallet = (id, title, rate) => {
-    const wallet = ethers.Wallet.createRandom();
-    setWallet({
-      address: wallet.address,
-      mnemonic: wallet.mnemonic.phrase,
-      privateKey: wallet.privateKey,
-      rate: rate,
-      id: id,
-      title: title,
-    });
+    if (!token) {
+      return toast.error("please login first", toastStyle);
+    } else {
+      const wallet = ethers.Wallet.createRandom();
+      setWallet({
+        address: wallet.address,
+        mnemonic: wallet.mnemonic.phrase,
+        privateKey: wallet.privateKey,
+        rate: rate,
+        id: id,
+        title: title,
+      });
 
-    setOpenModal(true);
+      setOpenModal(true);
+    }
   };
 
   const handleRental = (payload) => {
