@@ -1,12 +1,17 @@
 "use client";
 import { NAVBAR } from "@/constant";
+import { userLoginState } from "@/recoil/userLogin";
+import { SECRET_KEY } from "@/utils/ApiUrl";
+import { jwtExtract } from "@/utils/jwtExtract";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { ModeToggle } from "./ModeToggle";
+import { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useRecoilState } from "recoil";
+import { Button } from "../ui/button";
+import { DropdownMenuSeparator } from "../ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -14,15 +19,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { DropdownMenuSeparator } from "../ui/dropdown-menu";
-import Cookies from "js-cookie";
-import { useLogin } from "../auth/hooks/useLogin";
-import { SECRET_KEY } from "@/utils/ApiUrl";
-import { jwtExtract } from "@/utils/jwtExtract";
-import { useRecoilState } from "recoil";
-import { userLoginState } from "@/recoil/userLogin";
 import { Dropdown } from "./Dropdown";
-import { SquareGanttChart } from "lucide-react";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
   const [userData, setUserData] = useRecoilState(userLoginState);
@@ -34,9 +32,9 @@ const Navbar = () => {
   }
   useEffect(() => {
     const sessionCookie = Cookies.get("token");
-    const userLoggedin = Cookies.get("__session");
+    // const userLoggedin = Cookies.get("__session");
 
-    if (sessionCookie && userLoggedin) {
+    if (sessionCookie) {
       const payload = jwtExtract(sessionCookie, SECRET_KEY);
       setIsLoggedIn(true);
       setUserData(payload);

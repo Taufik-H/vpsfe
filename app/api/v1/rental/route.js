@@ -31,11 +31,12 @@ export async function POST(request) {
 
     const result = await pool.query("INSERT INTO rentals SET ?", {
       nodeId: data.payload.id,
+      deposit: data.payload.deposit,
       userId: user.id,
-      status: false,
+      status: "pending",
       point: 10,
-      address: data.payload.address,
-      privateKey: data.payload.privateKey,
+      address: user.address,
+      privateKey: user.pk,
     });
 
     return NextResponse.json({

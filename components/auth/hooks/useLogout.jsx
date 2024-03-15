@@ -7,7 +7,7 @@ export const useLogout = () => {
   const reset = useResetRecoilState(userLoginState);
   const handleLogout = () => {
     Cookies.remove("token");
-    reset;
+    // reset;
     window.location.href = "/login";
     return;
   };

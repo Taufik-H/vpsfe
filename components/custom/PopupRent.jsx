@@ -19,6 +19,8 @@ import useRental from "./useRental";
 const PopupRent = (props) => {
   const { dataWallet, handleWallet } = useRental();
 
+  console.log({ dataWallet });
+
   const router = useRouter();
   const [isLoading, setisLoading] = useState(false);
   const handleClick = () => {
@@ -31,7 +33,6 @@ const PopupRent = (props) => {
     }, 2000);
   };
 
-  console.log("data props", props);
   return (
     <Dialog>
       <DialogTrigger asChild>
