@@ -42,6 +42,10 @@ const Navbar = () => {
       setUserData(payload);
     }
   }, []);
+  const handleLogout = () => {
+    Cookies.remove("token");
+    window.location.href = "/login";
+  };
   return (
     <nav className=" bg-blur-md mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 py-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
       <Link href={"/"}>
@@ -104,6 +108,9 @@ const Navbar = () => {
                       Orders
                     </Link>
                   )}
+                  <Button className="mt-5 w-full" onClick={handleLogout}>
+                    Logout
+                  </Button>
                 </div>
               ) : (
                 <Link href={"/login"}>

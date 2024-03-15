@@ -16,10 +16,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
+import { useLogout } from "../auth/hooks/useLogout";
+import Cookies from "js-cookie";
 
 export function Dropdown(props) {
   const [open, setOpen] = React.useState(false);
-
+  const handleLogout = () => {
+    Cookies.remove("token");
+    window.location.href = "/login";
+  };
   return (
     <div className="flex  flex-col items-start justify-between rounded-md border  sm:flex-row sm:items-center">
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -57,7 +62,7 @@ export function Dropdown(props) {
             )}
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">
+            <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
               <DoorOpen className="mr-2 h-4 w-4" />
               Logout
             </DropdownMenuItem>
