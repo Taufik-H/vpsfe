@@ -2,6 +2,10 @@
 
 import * as React from "react";
 import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -33,13 +37,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TbCloudDownload, TbCloudUpload } from "react-icons/tb";
-import { adminOrders } from "@/constant";
-import Image from "next/image";
-import PopupWallet from "@/components/custom/PopupWallet";
+import { datatable } from "@/constant";
 import { API_URL } from "@/utils/ApiUrl";
 
-// const data = adminOrders;
-// use useEffect to fetch data from server dont use constant like this, this is only dummy data
 export const columns = [
   {
     id: "select",
@@ -65,45 +65,6 @@ export const columns = [
   },
 
   {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">
-        <div className="lowercase">{row.getValue("name")}</div>{" "}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">
-        <div className="lowercase">{row.getValue("email")}</div>{" "}
-      </div>
-    ),
-  },
-
-  {
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -119,20 +80,78 @@ export const columns = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>,
   },
   {
-    accessorKey: "address",
+    accessorKey: "rate",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Address
+          Rate
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("address")}</div>
+    cell: ({ row }) => <div className="lowercase">${row.getValue("rate")}</div>,
+  },
+  {
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          GPU
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+
+    accessorFn: (row) => `${row.gpuStart}GB / ${row.gpu}GB`,
+    id: "gpu",
+    cell: ({ getValue }) => <div className="">{getValue()}</div>,
+  },
+  {
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          CPU
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    accessorFn: (row) => `${row.cpuStart}GB / ${row.cpu}GB`,
+    id: "cpu",
+    cell: ({ getValue }) => <div className=""> {getValue()}</div>,
+  },
+  {
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          SPEED
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    accessorFn: (row) => `${row.up} / ${row.down}`,
+    id: "speed",
+    cell: ({ getValue }) => (
+      <div className="lowercase">
+        {" "}
+        <Badge
+          variant="secondary"
+          className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
+        >
+          <TbCloudUpload />
+          {getValue()} <TbCloudDownload />
+        </Badge>
+      </div>
     ),
   },
   {
@@ -154,30 +173,40 @@ export const columns = [
   },
 
   {
-    header: "Action",
-
-    id: "actionsuuu",
+    id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const dataaction = row.original;
 
       return (
-        <PopupWallet
-          username={row.getValue("username")}
-          passwordhost={"password"}
-        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Stop service</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
 ];
 
+// const data = datatable;
+
+// main funct
 export default function OrderTable() {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
-    fetch(`${API_URL}/rental`)
+    fetch(`${API_URL}/order`)
       .then((res) => res.json())
       .then((datas) => {
-        setData(datas?.data);
+        setData(datas);
       });
   }, []);
 
@@ -209,10 +238,10 @@ export default function OrderTable() {
     <div className="w-full p-10">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter by name..."
-          value={table.getColumn("username")?.getFilterValue() ?? ""}
+          placeholder="Filter title..."
+          value={table.getColumn("title")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("username")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

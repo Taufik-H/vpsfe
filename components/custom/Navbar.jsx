@@ -1,8 +1,9 @@
+"use client";
 import { NAVBAR } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -14,19 +15,25 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
-import { useAuth } from "../auth/hooks/useAuth";
+import Cookies from "js-cookie";
+import { useLogin } from "../auth/hooks/useLogin";
 
 const Navbar = () => {
   const currentPath = usePathname();
-  const { isLoggedIn, logout } = useAuth(); // Menggunakan hook useAuth
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   if (currentPath === "/login" || currentPath === "/register") {
     return null;
   }
-
+  useEffect(() => {
+    const sessionCookie = Cookies.get("__session");
+    if (sessionCookie) {
+      setIsLoggedIn(true);
+    }
+  }, []);
   return (
-    <div className="p-2 px-10">
-      <nav className=" bg-blur-md  mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
+    <div className="sticky top-0 p-2 px-10">
+      <nav className=" bg-blur-md mt-5 flex h-16 w-full items-center justify-between rounded-xl bg-gradient-to-tr px-10 py-10 dark:border-r dark:border-t dark:border-slate-600  dark:from-slate-100/20 dark:to-slate-100/10  ">
         <Link href={"/"}>
           <Image
             src={"/nav.png"}
@@ -76,11 +83,9 @@ const Navbar = () => {
                     </Link>
                   </div>
                 ))}
-                {/* sementara Tampilkan tombol Logout jika pengguna sudah login */}
+                {/* Tampilkan tombol Logout jika pengguna sudah login */}
                 {isLoggedIn ? (
-                  <Button className="mt-5 rounded-lg" onClick={logout}>
-                    Logout
-                  </Button>
+                  <Button className="mt-5 rounded-lg">Logout</Button>
                 ) : (
                   <Link href={"/login"}>
                     <Button className="mt-5 rounded-lg">Login</Button>
@@ -89,9 +94,14 @@ const Navbar = () => {
               </SheetContent>
             </Sheet>
           </div>
-          <Link href={"/login"} className="hidden lg:block">
-            <Button className="rounded-lg">Login</Button>
-          </Link>
+          {/* Sembunyikan tombol Login jika pengguna sudah login */}
+          {!isLoggedIn ? (
+            <Link href={"/login"} className="hidden lg:block">
+              <Button className="rounded-lg">Login</Button>
+            </Link>
+          ) : (
+            <Button className="hidden rounded-lg lg:block">Logout</Button>
+          )}
         </div>
       </nav>
     </div>
