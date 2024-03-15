@@ -1,8 +1,18 @@
 import { pool } from "@/config/db";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
+  const searchParams = req.nextUrl.searchParams;
+  const category = searchParams.get("ctg");
   try {
+    if (category) {
+      const results = await pool.query(
+        "SELECT * FROM products WHERE category = ?",
+        [category],
+      );
+      return NextResponse.json(results);
+    }
+
     const results = await pool.query("SELECT * FROM products");
     return NextResponse.json(results);
   } catch (error) {
