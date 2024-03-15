@@ -10,7 +10,6 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -26,8 +25,8 @@ const Navbar = () => {
   }
 
   return (
-    <div>
-      <nav className=" flex h-16 w-full items-center justify-between px-10 py-10   ">
+    <div className="p-2 px-10">
+      <nav className=" bg-blur-md  mt-5 flex h-16 w-full items-center justify-between rounded-xl border-r border-t border-slate-600 bg-gradient-to-tr from-slate-100/20  to-slate-100/10 px-10  ">
         <Link href={"/"}>
           <Image
             src={"/nav.png"}
@@ -88,7 +87,6 @@ const Navbar = () => {
           </Link>
         </div>
       </nav>
-      <div className="h-[1px] w-full bg-gradient-to-r from-transparent from-10% via-slate-300 via-50% to-transparent to-90% dark:via-slate-700"></div>
     </div>
   );
 };
