@@ -62,7 +62,7 @@ export function Dropdown(props) {
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem>
-                <Link href={"user/order"} className="flex items-center gap-3">
+                <Link href={"/user/order"} className="flex items-center gap-3">
                   <SquareGanttChart className="mr-2 h-4 w-4" />
                   my orders
                 </Link>

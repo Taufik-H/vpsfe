@@ -26,10 +26,8 @@ const Navbar = () => {
   const [userData, setUserData] = useRecoilState(userLoginState);
   const currentPath = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(userData.name);
-  if (currentPath === "/login" || currentPath === "/register") {
-    return null;
-  }
+  // console.log(userData.name);
+
   useEffect(() => {
     const sessionCookie = Cookies.get("token");
     // const userLoggedin = Cookies.get("__session");
@@ -40,6 +38,10 @@ const Navbar = () => {
       setUserData(payload);
     }
   }, []);
+
+  if (currentPath === "/login" || currentPath === "/register") {
+    return null;
+  }
   const handleLogout = () => {
     Cookies.remove("token");
     window.location.href = "/login";

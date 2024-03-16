@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { verify } from "jsonwebtoken";
 export async function GET() {
   try {
-    const results = await pool.query(
-      "SELECT dataProduct.*, dataUser.*, rentals.*  FROM rentals LEFT JOIN users AS dataUser ON dataUser.id = rentals.userId  LEFT JOIN products as dataProduct ON rentals.nodeId = dataProduct.id;",
+    const [results] = await pool.query(
+      "SELECT dataProduct.*, dataUser.*, rentals.*  FROM rentals LEFT JOIN users AS dataUser ON dataUser.id = rentals.userId  LEFT JOIN products as dataProduct ON rentals.nodeId = dataProduct.id ORDER BY rentals.id DESC;",
     );
     return NextResponse.json({ data: results });
   } catch (error) {

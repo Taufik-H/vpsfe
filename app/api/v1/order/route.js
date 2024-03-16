@@ -18,7 +18,7 @@ export async function GET() {
     const user = verify(token, process.env.JWT_SECRET);
 
     console.log("user ", user);
-    const results = await pool.query(
+    const [results] = await pool.query(
       "SELECT dataProduct.*, rentals.* FROM rentals LEFT JOIN products AS dataProduct ON rentals.nodeId = dataProduct.id WHERE rentals.userid = ?",
       [user.id],
     );

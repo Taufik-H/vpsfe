@@ -7,17 +7,29 @@ import { API_URL } from "@/utils/ApiUrl";
 
 const RentGpu = ({ tabs, query, name }) => {
   const [gpuNodes, setGpunodes] = useState([]);
+  const [loading, setLoading] = useState(false);
   const url = `${API_URL}/product?${query}`;
+
   useEffect(() => {
-    fetch(url)
+    setLoading(true);
+    let finalUrl = API_URL;
+    if (query) {
+      finalUrl += `/product?${query}`;
+    } else {
+      finalUrl += "/product";
+    }
+
+    fetch(finalUrl)
       .then((res) => res.json())
       .then((data) => {
-        console.log({ data });
+        // console.log({ data });
+        setLoading(false);
         setGpunodes(data);
       });
   }, []);
+
   return (
-    <section className="sm:px-6 lg:px-12 ">
+    <section className="px-3 sm:px-6 lg:px-12">
       <div className="mt-10 flex items-center  justify-items-center gap-7">
         <h1 className="text-lg font-bold capitalize">live GPU {name} nodes</h1>
         <VscChip size={25} className="mt-1 animate-pulse text-green-600" />
@@ -54,6 +66,19 @@ const RentGpu = ({ tabs, query, name }) => {
               .map((gpuNode) => (
                 <CardGpu
                   key={"80GB" + gpuNode.cpuName + gpuNode.gpuName}
+                  {...gpuNode}
+                />
+              ))}
+          </TabsContent>
+          <TabsContent
+            value="40GB"
+            className="mt-0 grid gap-7 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {gpuNodes
+              .filter((gpuNode) => gpuNode.gpu == 40)
+              .map((gpuNode) => (
+                <CardGpu
+                  key={"40GB" + gpuNode.cpuName + gpuNode.gpuName}
                   {...gpuNode}
                 />
               ))}

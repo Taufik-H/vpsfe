@@ -6,14 +6,14 @@ export async function GET(req) {
   const category = searchParams.get("ctg");
   try {
     if (category) {
-      const results = await pool.query(
+      const [results] = await pool.query(
         "SELECT * FROM products WHERE category = ?",
         [category],
       );
       return NextResponse.json(results);
     }
 
-    const results = await pool.query("SELECT * FROM products");
+    const [results] = await pool.query("SELECT * FROM products");
     return NextResponse.json(results);
   } catch (error) {
     return NextResponse.json(

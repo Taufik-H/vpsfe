@@ -13,10 +13,12 @@ export async function POST(req) {
       );
     }
 
-    const findUser = await await pool.query(
+    const [findUser] = await pool.query(
       "SELECT * FROM users WHERE email = ?",
       email,
     );
+
+    console.log({ findUser });
 
     if (!findUser[0]) {
       return res.json({ error: "User not found" }, { status: 404 });

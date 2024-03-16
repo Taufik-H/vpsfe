@@ -2,10 +2,6 @@
 
 import * as React from "react";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -37,174 +33,157 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TbCloudDownload, TbCloudUpload } from "react-icons/tb";
-import { datatable } from "@/constant";
+import { adminOrders, datatable } from "@/constant";
+import Image from "next/image";
+import PopupWallet from "@/components/custom/PopupWallet";
 import { API_URL } from "@/utils/ApiUrl";
-import { ApiService } from "@/services/ApiService";
+import { VscChip } from "react-icons/vsc";
 
+// const data = datatable;
+// use useEffect to fetch data from server dont use constant like this, this is only dummy data
 export const columns = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    accessorKey: "memory",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Memory
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-
-  {
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>,
-  },
-  {
-    accessorKey: "rate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Rate
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">${row.getValue("rate")}</div>,
-  },
-  {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          GPU
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-
-    accessorFn: (row) => `${row.gpuStart}GB / ${row.gpu}GB`,
-    id: "gpu",
-    cell: ({ getValue }) => <div className="">{getValue()}</div>,
-  },
-  {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          CPU
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    accessorFn: (row) => `${row.cpuStart}GB / ${row.cpu}GB`,
-    id: "cpu",
-    cell: ({ getValue }) => <div className=""> {getValue()}</div>,
-  },
-  {
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          SPEED
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    accessorFn: (row) => `${row.up} / ${row.down}`,
-    id: "speed",
-    cell: ({ getValue }) => (
-      <div className="lowercase">
-        {" "}
-        <Badge
-          variant="secondary"
-          className="gap-2 text-[11px] transition-all duration-300 hover:bg-blue-500 hover:text-white hover:dark:bg-white hover:dark:text-slate-900"
-        >
-          <TbCloudUpload />
-          {getValue()} <TbCloudDownload />
-        </Badge>
+      <div className="">
+        <div className="pl-7">{row.getValue("memory")} GB</div>{" "}
       </div>
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const statusValue = row.getValue("status");
+    accessorKey: "vcpu",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          vCPUs
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="">
+        <div className="pl-6">{row.getValue("vcpu")} vCPU</div>{" "}
+      </div>
+    ),
+  },
 
-      const displayText = statusValue === 1 ? "Runing" : "Pending";
-      const textClassName =
-        statusValue === 1 ? "text-green-600" : "text-yellow-600";
+  {
+    accessorKey: "bandwith",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Bandwidth
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="pl-7">{row.getValue("bandwith")} TB</div>
+    ),
+  },
+  {
+    accessorKey: "storage",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Storage
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="pl-7">{row.getValue("storage")} GB</div>,
+  },
+  {
+    accessorKey: "connection",
+    header: "Connection",
+    cell: ({ row }) => {
+      const statusValue = row.getValue("connection");
 
       return (
-        <div className={`font-semibold capitalize ${textClassName}`}>
-          {displayText}
-        </div>
+        <div className={`font-semibold capitalize`}>{statusValue} Gbps</div>
       );
     },
   },
 
+  // {
+  //   accessorKey: "monthPrice",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Monthly Price
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="lowercase">${row.getValue("monthPrice")}/m</div>
+  //   ),
+  // },
+
   {
-    id: "actions",
+    accessorKey: "hourPrice",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Hourly Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="pl-7">${row.getValue("hourPrice")}/h</div>
+    ),
+  },
+
+  {
+    header: "Action",
+
+    id: "action",
     enableHiding: false,
     cell: ({ row }) => {
       const dataaction = row.original;
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Action</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Stop service</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <PopupWallet
+          // username={row.getValue("username")}
+          passwordhost={"password"}
+          idNode={dataaction.id}
+          status={dataaction.status}
+        />
       );
     },
   },
 ];
 
-// const data = datatable;
-
-// main funct
-export default function OrderTable() {
+export default function ApiService() {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
-    fetch(`${API_URL}/order`)
+    fetch(`${API_URL}/product?ctg=vps`)
       .then((res) => res.json())
       .then((datas) => {
         setData(datas);
@@ -235,63 +214,21 @@ export default function OrderTable() {
     },
   });
 
-  // const handleStop = async () => {
-  //   let answer = window.confirm("Stop runing node?");
-
-  //   if (answer) {
-  //     ApiService.patch(`/rental/${idNode}`, {
-  //       payload,
-  //     })
-  //       .then((response) => {
-  //         if (response.status === 200) {
-  //           toast.success(response.data.message, toastStyle);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         toast.error(`${error.response.data.error}`, toastStyle);
-  //         console.log(error);
-  //       });
-  //   }
-  // };
-
   return (
-    <div className="w-full p-10">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter title..."
-          value={table.getColumn("title")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <section className="px-3 sm:px-6 lg:px-12">
+      <div className="mt-10 flex items-center  justify-items-center gap-7">
+        <h1 className="text-lg font-bold capitalize">live Api Service nodes</h1>
+        <VscChip size={25} className="mt-1 animate-pulse text-green-600" />
       </div>
+      <div className="flex items-center justify-items-center   gap-7 py-3">
+        <h1 className="text-sm capitalize">
+          Cloudnet AI, empowered by the latest hardware resources, is the answer
+          to fast performance and reliability.
+        </h1>
+        {/* <VscChip size={25} className="mt-1 animate-pulse text-green-600" /> */}
+      </div>
+      {/* content */}
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -366,6 +303,6 @@ export default function OrderTable() {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

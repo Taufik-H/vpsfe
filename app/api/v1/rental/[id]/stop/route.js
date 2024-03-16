@@ -5,27 +5,6 @@ export async function PATCH(request, { params }) {
   const data = await request.json();
   console.log({ data });
   try {
-    const [findProduct] = await pool.query(
-      "SELECT * FROM rentals WHERE id = ?",
-      [parseInt(params.id)],
-    );
-
-    console.log({ findProduct });
-    if (!findProduct) {
-      return NextResponse.json({ message: "Rental not found" });
-    }
-
-    const [user] = await pool.query("SELECT * FROM users WHERE id = ?", [
-      findProduct[0].userId,
-    ]);
-
-    const finalBalance = user[0].balance + findProduct[0].deposit;
-
-    const updateBalance = await pool.query(
-      "UPDATE users SET balance = ? WHERE id = ?",
-      [finalBalance, user.id],
-    );
-
     await pool.query("UPDATE rentals SET ? WHERE id = ?", [
       {
         status: "runing",

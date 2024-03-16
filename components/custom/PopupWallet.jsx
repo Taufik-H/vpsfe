@@ -43,6 +43,7 @@ const PopupWallet = ({ idNode, status }) => {
         setisLoading(false);
         if (response.status === 200) {
           toast.success(response.data.message, toastStyle);
+          window.location.reload();
         }
       })
       .catch((error) => {
@@ -58,7 +59,7 @@ const PopupWallet = ({ idNode, status }) => {
         {status === "runing" ? (
           <Button disabled>Confirm</Button>
         ) : (
-          <Button>Confirm</Button>
+          <Button>Rent Now</Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

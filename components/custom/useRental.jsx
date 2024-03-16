@@ -21,7 +21,6 @@ const useRental = () => {
     id: "",
     title: "",
   });
-  console.log("dataWallet", dataWallet);
 
   const router = useRouter();
 
@@ -52,7 +51,7 @@ const useRental = () => {
     })
       .then((response) => {
         setLoading(false);
-        console.log("response", response);
+        // console.log("response", response);
         if (response.status === 200) {
           setOpenModal(false);
           toast.success(response.data.message, toastStyle);
